@@ -30,22 +30,39 @@ def encrypt(image, text, max):
     column = 0
     index = 0
     for i in range(len(mapped)):
-
+        print(i)
         val = mapped[i]
         div = truncate(val / max)
-        print(div)
         for j in range(div):
-            print(column)
             if (index < height):
-                new[index, column] += max
+                new[index, column] += -1
                 index +=1
             else:
                 column +=1
                 index = 0
-                new[index, column] += max
+                new[index, column] += -1
                 index +=1
-        new[index, column] = new[index, column]
-        index +=1
+        
+
+        if (index < height):
+
+            new[index, column] += val - (div * max)
+            index +=1
+        else:
+            column +=1
+            index = 0
+            new[index, column] += val - (div * max)
+            index +=1
+        if (index < height):
+
+            new[index, column] += 0
+            index +=1
+        else:
+            column +=1
+            index = 0
+            new[index, column] += 0
+            index +=1
+
         
     return new
 
@@ -53,7 +70,7 @@ file = open('data.txt',mode='r')
 my = file.read()
 
 img = cv.imread('clyde.jpg', 0)
-plt.imshow(encrypt(img, my, 20))
+plt.imshow(encrypt(img, my, 10))
 
 plt.show()
 
