@@ -20,65 +20,56 @@ def map(text):
         intList.append(charList.index(text[i]) + 1)
     return intList
 
-
-def encrypt(image, text, max):
-    
-    new = image
+def encrypt(img, text, max):
+    width = img.shape[1]
+    height = img.shape[0]
     mapped = map(text)
-    width = image.shape[0]
-    height = image.shape[1]
-    print(width, height)
-    column = 0
     index = 0
+    column = 0
     for i in range(len(mapped)):
-        print(i)
         val = mapped[i]
-        div = truncate(val / max)
 
+        div = truncate(val / max)
 
         for j in range(div):
             if (index < height):
-                new[index, column] += -1
+                print(index, column)
+                img[index, column] +=1
                 index +=1
             else:
-                column +=1
                 index = 0
-                new[index, column] += -1
+                column +=1
+                img[index, column] +=1
                 index +=1
-        
 
         if (index < height):
-
-            new[index, column] += val - (div * max)
+            img[index, column] += val - (truncate(val / max) * max)
             index +=1
         else:
-            column +=1
             index = 0
-            new[index, column] += val - (div * max)
-            index +=1
-        if (index < height + 1):
-
-            new[index, column] += 0
-            index +=1
-        else:
             column +=1
-            index = 0
-            new[index, column] += 0
+            img[index, column] += val - (truncate(val / max) * max)
             index +=1
-
         
-    return new
+        if (index < height):
+            img[index, column] = img[index, column]
+            index +=1
+        else:
+            index = 0
+            column +=1
+            img[index, column] = img[index, column]
+            index +=1
+    return img
 
 file = open('data.txt',mode='r')
 my = file.read()
 
-print(len(my))
+image = cv.imread('black.png', 0)
+bl = image
+plt.imshow(image)
+plt.show()
+crip = encrypt(image, my, 5)
 
-img = cv.imread('black4k.jpg', 0)
-plt.imshow(encrypt(img, my, 5))
+plt.imshow(bl)
 
 plt.show()
-
-
-            
-
