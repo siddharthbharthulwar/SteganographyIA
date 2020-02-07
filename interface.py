@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
-
+from PIL import Image, ImageTk
 
 
 class Root(Tk):
@@ -14,7 +14,6 @@ class Root(Tk):
         self.labelFrame.grid(column = 0, row = 1, padx = 20, pady = 20)
 
         self.button()
-
 
 
     def button(self):
@@ -30,9 +29,12 @@ class Root(Tk):
         self.label.grid(column = 1, row = 2)
         self.label.configure(text = self.filename)
 
+        img = Image.open(self.filename)
+        photo = ImageTk.PhotoImage(img)
 
-
-
+        self.label2 = Label(image=photo)
+        self.label2.image = photo 
+        self.label2.grid(column=3, row=4)
 
 root = Root()
 root.mainloop()

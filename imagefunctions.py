@@ -61,15 +61,6 @@ def encrypt(img, text, max):
             index +=1
     return img
 
-file = open('data.txt',mode='r')
-my = file.read()
-
-image = cv.imread('black.png', 0)
-bl = image
-plt.imshow(image)
-plt.show()
-crip = encrypt(image, my, 5)
-
-plt.imshow(bl)
-
+img = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
+plt.imshow(encrypt(img, "hello world", 2))
 plt.show()
