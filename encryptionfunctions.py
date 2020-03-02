@@ -3,6 +3,7 @@ import numpy
 import matplotlib.pyplot as plt
 import string
 import numpy as np
+import copy
 
 def truncate(num):
     text = str(num)
@@ -32,7 +33,7 @@ def chooseMax(img, text):
     return int(size / sumZ)
 
 def encrypt(img, text, max):
-    param = img
+    param = copy.deepcopy(img)
     width = img.shape[1]
     height = img.shape[0]
     mapped = map(text)
@@ -45,6 +46,7 @@ def encrypt(img, text, max):
         val = mapped[i]
 
         div = truncate(val / max)
+
 
         for j in range(div):
             if (index < height):
@@ -84,20 +86,18 @@ def decrypt(img, encryptedimg):
     return sub
 
 img = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
-im2 = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
 file = open('data.txt',mode='r')
 my = file.read()
 
 plt.imshow(img)
 plt.show()
 
-max = chooseMax(img, my)
-encrypted = (encrypt(img, my, 1))
+encrypted = (encrypt(img, my, 3))
 plt.imshow(encrypted)
 plt.show()
 
-plt.imshow(im2)
+plt.imshow(img)
 plt.show()
 
-plt.imshow(decrypt(im2, encrypted))
+plt.imshow(decrypt(img, encrypted))
 plt.show()

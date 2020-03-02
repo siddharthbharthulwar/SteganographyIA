@@ -25,7 +25,7 @@ class Root(Tk):
     def fileDialog(self):
 
         self.filename = filedialog.askopenfilename(initialdir =  "/", title = "Select A File", filetype =
-        (("image files","*.jpg", "*.png"),("png files","*.png"), ("all files","*.*")) )
+        (("image files","*.jpg"), ("all files","*.*")) )
         self.label = ttk.Label(self.labelFrame, text = "")
         self.label.grid(column = 1, row = 2)
         self.label.configure(text = self.filename)
