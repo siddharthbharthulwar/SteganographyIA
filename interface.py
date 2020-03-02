@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from PIL import Image, ImageTk
+import cv2 as cv 
 
 
 class Root(Tk):
@@ -24,12 +25,13 @@ class Root(Tk):
     def fileDialog(self):
 
         self.filename = filedialog.askopenfilename(initialdir =  "/", title = "Select A File", filetype =
-        (("jpeg files","*.jpg"),("png files","*.png"), ("all files","*.*")) )
+        (("image files","*.jpg", "*.png"),("png files","*.png"), ("all files","*.*")) )
         self.label = ttk.Label(self.labelFrame, text = "")
         self.label.grid(column = 1, row = 2)
         self.label.configure(text = self.filename)
 
         img = Image.open(self.filename)
+        img = img.resize((250, 250))
         photo = ImageTk.PhotoImage(img)
 
         self.label2 = Label(image=photo)
