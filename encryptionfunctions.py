@@ -40,6 +40,14 @@ def encrypt(img, text, max):
     print(mapped)
     index = 0
     column = 0
+    
+    for i in range(max):
+        if (index < height):
+            index +=1
+        else:
+            index = 0
+            column += 1
+            index +=1
         
 
     for i in range(len(mapped)):
@@ -79,12 +87,27 @@ def encrypt(img, text, max):
     return param
 
 def decrypt(img, encryptedimg):
-    max = 1 #TODO: automatically encrypt and detect @MAX
+    max = 0 #TODO: automatically encrypt and detect @MAX
     index = 0
     column = 0
     sub = np.abs(np.subtract(img, encryptedimg))
+    width = sub.shape[1]
+    height = sub.shape[0]
+    maxNotFound = True
+    while (maxNotFound):
+        if (sub[index, column] == 0):
+            if (index < height):
+                max +=1
+                index +=1
+            else:
+                max +=1
+                column +=1
+                index = 0
+                index +=1
+        else:
+            maxNotFound = False
+    print(max)
     return sub
-
 img = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
 file = open('data.txt',mode='r')
 my = file.read()
@@ -92,7 +115,7 @@ my = file.read()
 plt.imshow(img)
 plt.show()
 
-encrypted = (encrypt(img, my, 3))
+encrypted = encrypt(img, my, 13)
 plt.imshow(encrypted)
 plt.show()
 
