@@ -112,7 +112,7 @@ def decrypt(img, encryptedimg):
     
     vals = []
     breakLoop = False
-    while (column < width) and (index < height) and (len(vals) < 4):
+    while (column < 30) and (index < height):
         zeroHit = True
         val = 0
         while (zeroHit):
@@ -123,14 +123,19 @@ def decrypt(img, encryptedimg):
                     #print(sub[index + 1, column])
                     print(index, column)
                     zeroHit = False
+                    vals.append(val)
                     index +=1
                 else:
-                    #print("outside array")
-                   # print(sub[0, column + 1])
-                    print(index, column)
-                    zeroHit = False
-                    index = 0
-                    column +=1
+                    if (sub[0, column + 1] == 0):
+
+                        print(index, column)
+                        zeroHit = False
+                        vals.append(val)
+                        index = 0
+                        column +=1
+                    else:
+                        index = 0
+                        column += 1
             else:
                 if (index < height):
                  #   print("not zero, inside")
@@ -190,7 +195,7 @@ def decrypt(img, encryptedimg):
                         column +=1
     
     '''
-    print(valList)
+    print(vals)
     return sub
 
 
