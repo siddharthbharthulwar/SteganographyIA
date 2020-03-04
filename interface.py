@@ -1,14 +1,16 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+import numpy as np
 from PIL import Image, ImageTk
 import cv2 as cv 
+from encryptionfunctions import encrypt
 
 
 class Root(Tk):
     def __init__(self):
         super(Root, self).__init__()
-        self.title("Python Tkinter Dialog Widget")
+        self.title("Steganography IA")
         self.minsize(640, 400)
 
         self.labelFrame = ttk.LabelFrame(self, text = "Open File")
@@ -31,7 +33,9 @@ class Root(Tk):
         self.label.configure(text = self.filename)
 
         img = Image.open(self.filename)
-        img = img.resize((250, 250))
+        self.img = np.array(img)
+        encrypted = encrypt(self.img, "Hello World", 1)
+        img = encrypted.resize((250, 250))
         photo = ImageTk.PhotoImage(img)
 
         self.label2 = Label(image=photo)

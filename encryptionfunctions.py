@@ -91,6 +91,8 @@ def decrypt(img, encryptedimg):
     index = 0
     column = 0
     sub = np.abs(np.subtract(img, encryptedimg))
+    plt.imshow(sub, cmap='gist_gray_r')
+    plt.show()
     width = sub.shape[1]
     height = sub.shape[0]
     maxNotFound = True
@@ -107,11 +109,96 @@ def decrypt(img, encryptedimg):
         else:
             maxNotFound = False
     print(max)
+    
+    vals = []
+    breakLoop = False
+    while (column < width) and (index < height) and (len(vals) < 4):
+        zeroHit = True
+        val = 0
+        while (zeroHit):
+            if (sub[index, column] == 0):
+                print(sub[index, column])
+                if (index + 1< height):
+                    #print("inside array")
+                    #print(sub[index + 1, column])
+                    print(index, column)
+                    zeroHit = False
+                    index +=1
+                else:
+                    #print("outside array")
+                   # print(sub[0, column + 1])
+                    print(index, column)
+                    zeroHit = False
+                    index = 0
+                    column +=1
+            else:
+                if (index < height):
+                 #   print("not zero, inside")
+                    print(sub[index, column])
+                    val += sub[index, column]
+                    index +=1
+                else:
+                 #   print("not zero, outside array")
+                    print(sub[index, column])
+                    val += sub[index, column]
+                    index = 0
+                    column +=1
+
+                    
+
+
+    '''
+    valList = []
+    while (column < width) and (index < height):
+        print(column, index)
+        zeroHit = True
+        val = 0
+        while (zeroHit):
+            if (sub[index, column] == 0):
+                if (index < height):
+                    if (sub[index + 1, column] == 0):
+                        index +=1
+                        zeroHit = False
+                        print("zero hit hit")
+                        valList.append(val)
+                    
+                    else:
+                        if (sub[0, column + 1] == 0):
+                            index = 0
+                            column +=1
+                            zeroHit = False
+                            print("zero hit hit ")
+                            valList.append(val)
+                            index +=1
+                    
+            else:
+                print(column, index)
+                if (sub[index, column] == 1):
+                    val += max
+                    if (index < height):
+                        index +=1
+                    else:
+                        index = 0
+                        column +=1
+                else:
+                    val += sub[index, column]
+                    
+                    if (index < height):
+                        index +=1
+                    else:
+                        index = 0
+                        column +=1
+    
+    '''
+    print(valList)
     return sub
+
+
+print(string.printable)
 img = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
 file = open('data.txt',mode='r')
 my = file.read()
-
+my = "9abcdefgh"
 plt.imshow(img)
 plt.show()
 
