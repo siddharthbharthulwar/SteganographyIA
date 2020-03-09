@@ -14,6 +14,7 @@ def truncate(num):
     return int(newText)
 
 
+
 def map(text):
     charList = string.printable
     intList = []
@@ -86,133 +87,29 @@ def encrypt(img, text, max):
             index +=1
     return param
 
-def decrypt(img, encryptedimg):
-    max = 0 #TODO: automatically encrypt and detect @MAX
-    index = 0
-    column = 0
-    sub = np.abs(np.subtract(img, encryptedimg))
-    plt.imshow(sub, cmap='gist_gray_r')
-    plt.show()
-    width = sub.shape[1]
-    height = sub.shape[0]
-    maxNotFound = True
-    while (maxNotFound):
-        if (sub[index, column] == 0):
-            if (index < height):
-                max +=1
-                index +=1
-            else:
-                max +=1
-                column +=1
-                index = 0
-                index +=1
-        else:
-            maxNotFound = False
-    print(max)
-    
-    vals = []
-    breakLoop = False
-    while (column < 30) and (index < height):
-        zeroHit = True
-        val = 0
-        while (zeroHit):
-            if (sub[index, column] == 0):
-                print(sub[index, column])
-                if (index + 1< height):
-                    #print("inside array")
-                    #print(sub[index + 1, column])
-                    print(index, column)
-                    zeroHit = False
-                    vals.append(val)
-                    index +=1
-                else:
-                    if (sub[0, column + 1] == 0):
+def move(array, index, column):
+    height = array.shape[0]
+    width = array.shape[1]
 
-                        print(index, column)
-                        zeroHit = False
-                        vals.append(val)
-                        index = 0
-                        column +=1
-                    else:
-                        index = 0
-                        column += 1
-            else:
-                if (index < height):
-                 #   print("not zero, inside")
-                    print(sub[index, column])
-                    val += sub[index, column]
-                    index +=1
-                else:
-                 #   print("not zero, outside array")
-                    print(sub[index, column])
-                    val += sub[index, column]
-                    index = 0
-                    column +=1
+    if (index < height):
+        index +=1
+    else:
+        index = 0
+        column +=1
 
-                    
-
-
-    '''
-    valList = []
-    while (column < width) and (index < height):
-        print(column, index)
-        zeroHit = True
-        val = 0
-        while (zeroHit):
-            if (sub[index, column] == 0):
-                if (index < height):
-                    if (sub[index + 1, column] == 0):
-                        index +=1
-                        zeroHit = False
-                        print("zero hit hit")
-                        valList.append(val)
-                    
-                    else:
-                        if (sub[0, column + 1] == 0):
-                            index = 0
-                            column +=1
-                            zeroHit = False
-                            print("zero hit hit ")
-                            valList.append(val)
-                            index +=1
-                    
-            else:
-                print(column, index)
-                if (sub[index, column] == 1):
-                    val += max
-                    if (index < height):
-                        index +=1
-                    else:
-                        index = 0
-                        column +=1
-                else:
-                    val += sub[index, column]
-                    
-                    if (index < height):
-                        index +=1
-                    else:
-                        index = 0
-                        column +=1
-    
-    '''
-    print(vals)
-    return sub
 
 
 print(string.printable)
 img = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
 file = open('data.txt',mode='r')
 my = file.read()
-my = "9abcdefgh"
+#my = "9abcdefgh"
 plt.imshow(img)
 plt.show()
 
-encrypted = encrypt(img, my, 13)
+encrypted = encrypt(img, my, 1)
 plt.imshow(encrypted)
 plt.show()
 
 plt.imshow(img)
-plt.show()
-
-plt.imshow(decrypt(img, encrypted))
 plt.show()
