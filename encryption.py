@@ -20,7 +20,6 @@ def map(text):
     return intList
 
 
-
 class Encryption:  
     
     # init method or constructor   
@@ -37,11 +36,9 @@ class Encryption:
 
         if (self.index < self.height - 1):
             self.index +=1
-          #  print(self.index, "/", self.height)
         else:
             self.index = 0
             self.column +=1
-            print("condition two")
 
     def encrypt(self, max):
 
@@ -56,15 +53,42 @@ class Encryption:
             div = truncate(val / max)
 
             for j in range(div):
+                
+                if (param[self.index, self.column] > 120):
+                    param[self.index, self.column] -=1
+                else:
+                    param[self.index, self.column] += 1
+
+
                 param[self.index, self.column] +=1
                 self.moveCell()
 
-            param[self.index, self.column] += val - (truncate(val / max) * max)
+            if (param[self.index, self.column] > 120):
+                param[self.index, self.column] -= val - (truncate(val / max) * max)
+
+            else:
+                param[self.index, self.column] += val - (truncate(val / max) * max)
+
             self.moveCell()
             self.moveCell()
         
-        return param
+        self.encrypted = param
     
+    def decrypt(self, max):
+
+        self.index = 0
+        self.column = 0
+        param = np.abs(np.subtract(self.encrypted, self.img))
+        max = 0
+        maxFound = False
+        while not maxFound:
+
+            if (param[self.index, self.column] == 0):
+                max +=1
+                self.moveCell()
+            else:
+                maxFound = True
+        print(max)
 
 
 im = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
@@ -72,8 +96,10 @@ file = open('data.txt', mode = 'r')
 my = file.read()
 
 eg = Encryption(im, my)
-plt.imshow(eg.encrypt(1))
+eg.encrypt(13)
+plt.imshow(eg.encrypted)
 plt.show()
 
+eg.decrypt(1)
 
     
