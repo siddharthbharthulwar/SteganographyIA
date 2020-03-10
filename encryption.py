@@ -23,14 +23,16 @@ def map(text):
 class Encryption:  
     
     # init method or constructor   
-    def __init__(self, image, text):  
-        self.img = image
+    def __init__(self, path, text):  
+        self.img = cv.imread(path)
+        self.b, self.g, self.r = cv.split(self.img)
         self.txt = text
         self.mapped = map(self.txt)
         self.height = self.img.shape[0]
         self.width = self.img.shape[1]
         self.index = 0
         self.column = 0
+
     
     def moveCell(self):
 
@@ -40,9 +42,18 @@ class Encryption:
             self.index = 0
             self.column +=1
 
+    def moveBackCell(self):
+
+        if (self.index > 0):
+            self.index -= 1
+        else:
+            self.index = self.height - 1
+            self.column -=1
+
     def encrypt(self, max):
 
-        param = copy.deepcopy(self.img)
+        param = copy.deepcopy(self.b)
+        green = copy.deepcopy(self.g)
 
         for i in range(max):
             self.moveCell()
@@ -70,17 +81,27 @@ class Encryption:
                 param[self.index, self.column] += val - (truncate(val / max) * max)
 
             self.moveCell()
+            green[self.index, self.column] +=1
             self.moveCell()
         
         self.encrypted = param
+        self.finalimage = cv.merge((self.r, self.g, param))
+
+        plt.imshow(np.subtract(green, self.g))
+        plt.show()
     
     def decrypt(self, max):
 
         self.index = 0
         self.column = 0
-        param = np.abs(np.subtract(self.encrypted, self.img))
+        param = np.abs(np.subtract(self.encrypted, self.b))
+
+        plt.imshow(param)
+        plt.show()
         max = 0
         maxFound = False
+        valList = []
+        #automatically detecting the max value from the encryption function
         while not maxFound:
 
             if (param[self.index, self.column] == 0):
@@ -88,18 +109,37 @@ class Encryption:
                 self.moveCell()
             else:
                 maxFound = True
-        print(max)
+        while True:
 
+            current = param[self.index, self.column]
+
+            if (current == 0):
+
+                self.moveCell()
+
+                if (current == 0):
+
+                    self.moveCell()
+
+                    if (current == 0):
+
+                        break
+                    else:
+
+            
+                        self.moveBackCell()
+
+            
 
 im = cv.imread('black.png', cv.IMREAD_GRAYSCALE)
 file = open('data.txt', mode = 'r')
 my = file.read()
 
-eg = Encryption(im, my)
+eg = Encryption('clyde.jpg', my)
 eg.encrypt(13)
-plt.imshow(eg.encrypted)
+plt.imshow(eg.finalimage)
 plt.show()
 
-eg.decrypt(1)
+#eg.decrypt(1)
 
     
